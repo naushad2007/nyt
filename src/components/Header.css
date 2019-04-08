@@ -1,0 +1,49 @@
+.burger-icon {
+  width: 32px;
+  border: none;
+  float: left;
+  margin: 5px;
+  background: none;
+  cursor: pointer;
+}
+.header-logo {
+  max-width: 400px;
+  margin: 10px auto;
+  clear: left;
+  display: block;
+}
+.header-links {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin-top: 0;
+  border-bottom: 1px solid black;
+  border-top: 1px solid #ddd;
+}
+.header-links li {
+  list-style: none;
+  padding: 0.5rem;
+}
+.header-links li:hover,
+.header-links li:focus {
+  background: #f8f8f8;
+}
+.header-links a {
+  text-decoration: none;
+  color: inherit;
+}
+.side-nav {
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  background: white;
+  top: 0;
+  border-right: 1px solid #ddd;
+  width: 210px;
+}
+
+@media (max-width: 1019px) {
+  .header-links {
+    display: none;
+  }
+}
