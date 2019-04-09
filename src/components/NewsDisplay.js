@@ -20,8 +20,8 @@ class NewsDisplay extends Component {
       let category = this.props["*"]
       fetch(`https://api.nytimes.com/svc/topstories/v2/${category}.json?api-key=${ENV.REACT_APP_CLIENT_ID}`).then(response => response.json())
         .then(data => {
-          console.log(data);
-          this.setState({ loading: false });
+          console.log(data.results);
+          this.setState({ loading: false, newsArticles: data.results });
         })
         .catch(error => {
           console.clear();
@@ -30,8 +30,7 @@ class NewsDisplay extends Component {
     } else {
       fetch(`https://api.nytimes.com/svc/topstories/v2/home.json?api-key=${ENV.REACT_APP_CLIENT_ID}`).then(response => response.json())
         .then(data => {
-          console.log(data);
-          this.setState({ loading: false });
+          this.setState({ loading: false, newsArticles: data.results });
         })
         .catch(error => {
           console.clear();
@@ -42,12 +41,12 @@ class NewsDisplay extends Component {
   }
   componentDidUpdate(prevProps) {
     if (prevProps["*"] !== this.props["*"]) {
+      this.setState({ loadError: false });
       if (this.props["*"]) {
         let category = this.props["*"]
         fetch(`https://api.nytimes.com/svc/topstories/v2/${category}.json?api-key=${ENV.REACT_APP_CLIENT_ID}`).then(response => response.json())
           .then(data => {
-            console.log(data);
-            this.setState({ loading: false });
+            this.setState({ loading: false, newsArticles: data.results });
           })
           .catch(error => {
             console.clear();
@@ -56,8 +55,7 @@ class NewsDisplay extends Component {
       } else {
         fetch(`https://api.nytimes.com/svc/topstories/v2/home.json?api-key=${ENV.REACT_APP_CLIENT_ID}`).then(response => response.json())
           .then(data => {
-            console.log(data);
-            this.setState({ loading: false });
+            this.setState({ loading: false, newsArticles: data.results });
           })
           .catch(error => {
             console.clear();
@@ -69,7 +67,23 @@ class NewsDisplay extends Component {
   render() {
     let { loading, loadError, newsArticles } = this.state;
     if (!loading && !loadError) {
-      return (<p>hi :)</p>)
+      return (
+        <main className="news-display" id="main-content">
+          {newsArticles.map(article => {
+            return (
+              <article className="news-card" key={article.title}>
+                <div className="img-container">
+                  <a href={article.url}><img className="test-img" alt={article.title}
+                    src={article.multimedia[3] ? article.multimedia[3].url.replace("210", "440") : 'https://via.placeholder.com/440x293?text=No+Image+Provided'} /></a>
+                </div>
+                <a href={article.url}><h2>{article.title}</h2></a>
+                <p>{article.abstract}</p>
+                <p className="byline">{article.byline}</p>
+              </article>
+            )
+          })}
+        </main>
+      )
     }
     else if (loadError) {
       return (<p>Failed to load content.</p>)

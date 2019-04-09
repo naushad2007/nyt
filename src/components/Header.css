@@ -1,3 +1,10 @@
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
 .burger-icon {
   width: 32px;
   border: none;
@@ -21,7 +28,6 @@
   border-top: 1px solid #ddd;
 }
 .header-links li {
-  list-style: none;
   padding: 0.5rem;
 }
 .header-links li:hover,
@@ -41,9 +47,23 @@
   border-right: 1px solid #ddd;
   width: 210px;
 }
+.sidenav-links {
+  width: 100%;
+  padding: 0;
+  text-align: left;
+}
+.sidenav-links li {
+  padding: 5px 5px 5px 20px;
+}
 
 @media (max-width: 1019px) {
   .header-links {
     display: none;
+  }
+}
+
+@media (max-width: 764px) {
+  .header-logo {
+    max-width: 300px;
   }
 }
