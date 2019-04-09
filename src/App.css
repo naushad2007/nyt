@@ -52,17 +52,18 @@
   font-size: 0.6rem;
 }
 
-@media (max-width: 764px) {
+@media (max-width: 799px) {
   .news-card {
     width: 100%;
+    border: none;
   }
   .news-card:first-child {
-    width: inherit;
+    width: 100%;
   }
   .news-card:nth-child(2) {
-    width: inherit;
+    width: 100%;
   }
   .news-card:nth-child(3) {
-    width: inherit;
+    width: 100%;
   }
 }
