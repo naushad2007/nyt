@@ -20,7 +20,6 @@ class NewsDisplay extends Component {
       let category = this.props["*"]
       fetch(`https://api.nytimes.com/svc/topstories/v2/${category}.json?api-key=${ENV.REACT_APP_CLIENT_ID}`).then(response => response.json())
         .then(data => {
-          console.log(data.results);
           this.setState({ loading: false, newsArticles: data.results });
         })
         .catch(error => {
