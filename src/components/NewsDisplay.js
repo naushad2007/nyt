@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import runtimeEnv from "@mars/heroku-js-runtime-env";
+import NewsCard from "./NewsCard";
 
 const ENV = runtimeEnv();
 
@@ -9,6 +10,7 @@ class NewsDisplay extends Component {
 
     this.state = {
       loading: true,
+      //loadError is used for invalid url params
       loadError: false,
       newsArticles: []
     }
@@ -17,7 +19,7 @@ class NewsDisplay extends Component {
   }
   getArticles(category) {
     /*Checks for url paramater and gets news for that category. 
-     * no paramater defaults to home page news */
+     * if no paramater provided defaults to home page news */
     if (category) {
       fetch(`https://api.nytimes.com/svc/topstories/v2/${category}.json?api-key=${ENV.REACT_APP_CLIENT_ID}`).then(response => response.json())
         .then(data => {
@@ -43,26 +45,21 @@ class NewsDisplay extends Component {
   }
   componentDidUpdate(prevProps) {
     if (prevProps["*"] !== this.props["*"]) {
+      //clear any errors that may have occured during previous fetch attempt
       this.setState({ loadError: false });
+
       this.getArticles(this.props["*"])
     }
   }
   render() {
     let { loading, loadError, newsArticles } = this.state;
+    //If the data was successfully fetched render news
     if (!loading && !loadError) {
       return (
         <main className="news-display" id="main-content">
           {newsArticles.map(article => {
             return (
-              <article className="news-card" key={article.title}>
-                <div className="img-container">
-                  <a href={article.url}><img className="test-img" alt={article.title}
-                    src={article.multimedia[3] ? article.multimedia[3].url.replace("210", "440") : 'https://via.placeholder.com/440x293?text=No+Image+Provided'} /></a>
-                </div>
-                <a href={article.url}><h2>{article.title}</h2></a>
-                <p>{article.abstract}</p>
-                <p className="byline">{article.byline}</p>
-              </article>
+              <NewsCard article={article} />
             )
           })}
         </main>
