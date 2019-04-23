@@ -12,12 +12,13 @@ class NewsDisplay extends Component {
       loadError: false,
       newsArticles: []
     }
+
+    this.getArticles = this.getArticles.bind(this);
   }
-  componentDidMount() {
+  getArticles(category) {
     /*Checks for url paramater and gets news for that category. 
      * no paramater defaults to home page news */
-    if (this.props["*"]) {
-      let category = this.props["*"]
+    if (category) {
       fetch(`https://api.nytimes.com/svc/topstories/v2/${category}.json?api-key=${ENV.REACT_APP_CLIENT_ID}`).then(response => response.json())
         .then(data => {
           this.setState({ loading: false, newsArticles: data.results });
@@ -36,31 +37,14 @@ class NewsDisplay extends Component {
           this.setState({ loadError: true });
         });
     }
-
+  }
+  componentDidMount() {
+    this.getArticles(this.props["*"])
   }
   componentDidUpdate(prevProps) {
     if (prevProps["*"] !== this.props["*"]) {
       this.setState({ loadError: false });
-      if (this.props["*"]) {
-        let category = this.props["*"]
-        fetch(`https://api.nytimes.com/svc/topstories/v2/${category}.json?api-key=${ENV.REACT_APP_CLIENT_ID}`).then(response => response.json())
-          .then(data => {
-            this.setState({ loading: false, newsArticles: data.results });
-          })
-          .catch(error => {
-            console.clear();
-            this.setState({ loadError: true });
-          });
-      } else {
-        fetch(`https://api.nytimes.com/svc/topstories/v2/home.json?api-key=${ENV.REACT_APP_CLIENT_ID}`).then(response => response.json())
-          .then(data => {
-            this.setState({ loading: false, newsArticles: data.results });
-          })
-          .catch(error => {
-            console.clear();
-            this.setState({ loadError: true });
-          });
-      }
+      this.getArticles(this.props["*"])
     }
   }
   render() {
